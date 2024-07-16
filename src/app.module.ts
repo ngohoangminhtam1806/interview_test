@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { BranchModule } from './branch/branch.module';
+import { Bookings } from './entities/bookings.entity';
+import { Services } from './entities/services.entity';
+import { Staffs } from './entities/staffs.entity';
+import { Clinics } from './entities/clinics.entity';
+import { Customers } from './entities/customers.entity';
+import { BookingsService } from './bookings/bookings.service';
+import { BookingsController } from './bookings/bookings.controller';
 
 @Module({
   imports: [
@@ -13,12 +17,12 @@ import { BranchModule } from './branch/branch.module';
       username: 'user_readonly.apcziaevgmpuvgyjqrwv',
       password: 'postgresql',
       database: 'postgres',
-      autoLoadEntities: true,
-      synchronize: true,
+      entities: [Bookings, Services, Staffs, Clinics, Customers],
+      synchronize: false,
     }),
-    BranchModule,
+    TypeOrmModule.forFeature([Bookings, Services, Staffs, Clinics, Customers]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [BookingsController],
+  providers: [BookingsService],
 })
 export class AppModule {}
